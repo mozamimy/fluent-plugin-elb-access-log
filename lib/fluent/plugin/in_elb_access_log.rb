@@ -184,7 +184,7 @@ class Fluent::ElbAccessLogInput < Fluent::Input
       parse_request!(record)
 
       begin
-        time = Time.parse(record['timestamp'])
+        time = Time.strptime(record['timestamp'].to_s, '%FT%T.%L %z')
         router.emit(@tag, time.to_i, record)
       rescue ArgumentError => e
         @log.warn("#{e.message}: #{row}")
